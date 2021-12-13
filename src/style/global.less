@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body,
+html {
+  @apply h-full bg-stone-100;
+}
+
+#todoly-app {
+  @apply h-full w-full flex justify-center items-center p-2 sm:p-4 md:p-11;
+}
+
+.todoly-app-layout {
+  @apply bg-white flex flex-col w-full h-full max-w-screen-2xl rounded-lg border-slate-500/10 border shadow-lg shadow-slate-600/10;
+}
