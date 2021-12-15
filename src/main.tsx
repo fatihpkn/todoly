@@ -6,13 +6,20 @@ import App from "containers/app";
 // Styling
 import "style/global.less";
 
+// Global (redux like store)
+import { StoreProvider } from "easy-peasy";
+import { Store } from "store";
+import AppLoading from "components/app-loading";
+
 ReactDOM.render(
   <React.StrictMode>
-    <React.Suspense fallback='loading..'>
+    <StoreProvider store={Store}>
       <div className='todoly-app-layout'>
-        <App />
+        <React.Suspense fallback={<AppLoading />}>
+          <App />
+        </React.Suspense>
       </div>
-    </React.Suspense>
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById("todoly-app")
 );

@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly TODOLY_DOC_TITLE: string;
   readonly TODOLY_API_ENDPOINT: string;
+  readonly TODOLY_APP_FAKE_LOADING_TIME: number;
 }
 
 interface ImportMeta {

@@ -1,4 +1,6 @@
 import * as React from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useAppState } from "store";
 
 const Private = React.lazy(
   async () =>
@@ -8,7 +10,7 @@ const Private = React.lazy(
       setTimeout(() => {
         //@ts-ignore
         return resolve(r);
-      }, 1000);
+      }, import.meta.env.TODOLY_APP_FAKE_LOADING_TIME);
     })
 );
 const Public = React.lazy(
@@ -19,16 +21,18 @@ const Public = React.lazy(
       setTimeout(() => {
         //@ts-ignore
         return resolve(r);
-      }, 1000);
+      }, import.meta.env.TODOLY_APP_FAKE_LOADING_TIME);
     })
 );
 
 interface IAppProps {}
 
 const App: React.FunctionComponent<IAppProps> = (props) => {
-  const user = true;
+  const { valid } = useAppState((store) => store.Auth);
 
-  return <div>{user ? <Private /> : <Public />}</div>;
+  console.log("user", valid);
+
+  return <BrowserRouter>{valid ? <Private /> : <Public />}</BrowserRouter>;
 };
 
 export default App;
