@@ -1,9 +1,12 @@
 import * as React from "react";
+import { useAppActions, useAppState } from "store";
 
 interface IProfileRouteProps {}
 
 const ProfileRoute: React.FunctionComponent<IProfileRouteProps> = (props) => {
-  return <div>User Profile page</div>;
+  const { user } = useAppState((s) => s.Auth);
+
+  return <pre>{JSON.stringify(user, null, 3)}</pre>;
 };
 
 export default ProfileRoute;

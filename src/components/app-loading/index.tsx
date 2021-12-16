@@ -5,7 +5,7 @@ interface IAppLoadingProps {}
 
 const AppLoading: React.FunctionComponent<IAppLoadingProps> = (props) => {
   const progressStepCount = 5;
-  const fakeLoadingTime = import.meta.env.TODOLY_APP_FAKE_LOADING_TIME;
+  const fakeLoadingTime = parseInt(import.meta.env.TODOLY_APP_FAKE_LOADING_TIME);
   const progressStepTimer = fakeLoadingTime / progressStepCount;
 
   const [progress, setProgress] = React.useState(25);

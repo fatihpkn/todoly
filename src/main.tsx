@@ -10,16 +10,25 @@ import "style/global.less";
 import { StoreProvider } from "easy-peasy";
 import { Store } from "store";
 import AppLoading from "components/app-loading";
+import { QueryClientProvider, QueryClient, QueryCache } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const RQClient = new QueryClient({
+  queryCache: new QueryCache(),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <StoreProvider store={Store}>
-      <div className='todoly-app-layout'>
-        <React.Suspense fallback={<AppLoading />}>
-          <App />
-        </React.Suspense>
-      </div>
-    </StoreProvider>
+    <QueryClientProvider client={RQClient}>
+      <ReactQueryDevtools />
+      <StoreProvider store={Store}>
+        <div className='todoly-app-layout'>
+          <React.Suspense fallback={<AppLoading />}>
+            <App />
+          </React.Suspense>
+        </div>
+      </StoreProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("todoly-app")
 );

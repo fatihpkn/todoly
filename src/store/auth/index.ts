@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { action, computed, persist, thunk } from "easy-peasy";
 import { Login } from "services/auth";
 import { StoreRequestStatus } from "store/types";
+import { sleep } from "utils";
 import { AuthStoreModel } from "./models";
 
 const Auth: AuthStoreModel = persist(
@@ -9,7 +10,7 @@ const Auth: AuthStoreModel = persist(
     data: undefined,
     token: null,
     tokenHeaderSet: false,
-    valid: computed((state) => !!state.token),
+    valid: computed((state) => !!state.data?.accessToken),
     user: undefined,
     request: StoreRequestStatus.IDLE,
     error: null,
@@ -32,19 +33,9 @@ const Auth: AuthStoreModel = persist(
       actions.setRequest(StoreRequestStatus.PENDING);
 
       try {
-        // await sleep(250);
-        // const data = await Login(payload);
-        const data = {
-          data: {
-            name: "test",
-          },
-          access_token: "JWT_TOKEN",
-          user: { name: "Fatih" },
-        };
-        actions.loginSuccess(data);
+        actions.loginSuccess(payload);
         actions.setTokenHeaderSet(true);
         actions.setRequest(StoreRequestStatus.SUCCESS);
-        // return data;
       } catch (error) {
         console.error("Error while login -> ", error);
         actions.setError(error);
@@ -53,7 +44,7 @@ const Auth: AuthStoreModel = persist(
     }),
     loginSuccess: action((state, payload) => {
       state.data = { ...payload, login_at: dayjs() };
-      state.token = payload.access_token;
+      state.token = payload.accessToken;
       state.user = payload.user;
     }),
 
@@ -72,7 +63,7 @@ const Auth: AuthStoreModel = persist(
       state.token = null;
       state.tokenHeaderSet = false;
       state.user = undefined;
-      localStorage.clear();
+      localStorage.removeItem("[todoly-store][0][Auth]");
     }),
   },
   {
