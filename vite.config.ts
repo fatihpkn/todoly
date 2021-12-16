@@ -20,10 +20,11 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
-    legacy({
-      targets: ["defaults", "ie 9-11"],
-      additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
-    }),
+    // Additional legcay() plugin for support IE11
+    // legacy({
+    //   targets: ["defaults", "ie 9-11"],
+    //   additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
+    // }),
     visualizer(),
   ],
   envDir: "./",

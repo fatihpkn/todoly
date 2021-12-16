@@ -32,7 +32,7 @@ export const { instance: API, applyApiRequestMiddleware } = CreateAPI({ baseURL:
 // maybe we could have some other API ? Maybe v2
 export const { instance: API_V2, applyApiRequestMiddleware: API_v2_applyMiddleware } = CreateAPI({ baseURL: `${import.meta.env.TODOLY_API_ENDPOINT}v2/` });
 
-const logMiddleware = await applyApiRequestMiddleware((req: AxiosRequestConfig) => {
+const logMiddleware = applyApiRequestMiddleware((req: AxiosRequestConfig) => {
   return new Promise(async (resolve, reject) => {
     console.log("Log something before request go..");
     await sleep(100);
@@ -42,7 +42,7 @@ const logMiddleware = await applyApiRequestMiddleware((req: AxiosRequestConfig) 
 
 // We can clear middleware
 // setTimeout(() => {
-//   logMiddleware.clear()
+//   logMiddleware.then(m => m.clear())
 // }, 1000);
 
 const slowDownAPI = (req: AxiosRequestConfig | Promise<AxiosRequestConfig>) =>
