@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid, TextField, Typography } from "@mui/material";
+import { Alert, Button, CircularProgress, Grid, TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -13,18 +13,21 @@ import { useAppActions, useAppState } from "store";
 interface IRegisterRouteProps {}
 
 const RegisterRoute: React.FunctionComponent<IRegisterRouteProps> = (props) => {
-  const { control, watch, formState, handleSubmit } = useForm<RegisterRequestModel>({ resolver: yupResolver(UserProfileValidationScheme), reValidateMode: "onChange", mode: "onSubmit" });
+  const { control, watch, formState, handleSubmit, setError } = useForm<RegisterRequestModel>({ resolver: yupResolver(UserProfileValidationScheme), reValidateMode: "onChange", mode: "onSubmit" });
 
   const { login } = useAppActions((store) => store.Auth);
 
-  const formVals = watch();
+  const [serverError, setServerError] = React.useState<string>();
 
   const onRegisterFormSubmit: SubmitHandler<RegisterRequestModel> = async (form) => {
     try {
+      setServerError(undefined);
       await sleep(300);
       const data = await Register(form);
       await login(data);
-    } catch (error) {}
+    } catch (error) {
+      setServerError(error as string);
+    }
   };
 
   const { email, name, password } = formState.errors;
@@ -66,6 +69,12 @@ const RegisterRoute: React.FunctionComponent<IRegisterRouteProps> = (props) => {
             </Button>
           </Grid>
         </Grid>
+
+        {serverError && (
+          <Grid mt={1} xs={12} item>
+            <Alert severity='error'>{serverError}</Alert>
+          </Grid>
+        )}
 
         <Grid item mt={2} xs={12}>
           <Typography typography='subtitle1'>

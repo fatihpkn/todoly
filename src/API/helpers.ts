@@ -22,7 +22,7 @@ export const GlobalErrorHandler = async (responseError: AxiosError<string>) => {
 
   let err = null;
 
-  console.log("responseError", responseError);
+  console.log("responseError", responseError.toJSON());
 
   console.log("Error ->", responseError.response?.status);
 
@@ -47,8 +47,7 @@ export const GlobalErrorHandler = async (responseError: AxiosError<string>) => {
     throw err;
   }
 
-  err = responseError || "Server not respond.";
+  err = responseError.response && responseError.response.data || "Server not responding";
 
-  console.error(err);
   throw err;
 };
