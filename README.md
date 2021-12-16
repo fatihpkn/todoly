@@ -1,4 +1,4 @@
-# todoly
+# todoly app | task manage
 
 ## yarn start
 
